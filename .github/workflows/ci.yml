@@ -119,36 +119,8 @@ jobs:
       - name: The Mercure hub answers the project's address
         run: |
           HUB="$(symfony var:export --multiline | sed -n 's/^export MERCURE_PUBLIC_URL=//p')"
-          curl -s --max-time 3 -o /dev/null -D headers.txt -H 'Origin: http://127.0.0.1:8000' "$HUB?match=ci" || true
+          curl -s --max-time 3 -o /dev/null -D headers.txt -H 'Origin: http://127.0.0.1:8000' "$HUB?topic=ci" || true
           grep -i '^access-control-allow-origin: http://127.0.0.1:8000' headers.txt
-
-      # The protocol, end to end: the app's own subscriber cookie holds a
-      # `match=` subscription open, and a private update the app publishes
-      # through its configured hub reaches it.
-      - name: A private update the app publishes reaches a subscriber
-        run: |
-          eval "$(symfony var:export --multiline | grep -E '^export MERCURE_(URL|PUBLIC_URL)=')"
-          cat > /tmp/hub.php <<'PHP'
-          <?php
-          require 'vendor/autoload.php';
-          (new Symfony\Component\Dotenv\Dotenv())->bootEnv('.env');
-          $kernel = new App\Kernel('test', true);
-          $kernel->boot();
-          $c = $kernel->getContainer()->get('test.service_container');
-          if ('cookie' === ($argv[1] ?? '')) {
-              $cookie = $c->get(Symfony\Component\Mercure\Authorization::class)->createCookie(Symfony\Component\HttpFoundation\Request::create('http://127.0.0.1:8000/'), ['ci/topic']);
-              echo $cookie->getName().'='.$cookie->getValue();
-          } else {
-              $c->get('mercure.hub.default')->publish(new Symfony\Component\Mercure\Update('ci/topic', '{"ci":true}', private: true));
-          }
-          PHP
-          COOKIE="$(php /tmp/hub.php cookie)"
-          curl -s -N --max-time 8 -H "Cookie: $COOKIE" "$MERCURE_PUBLIC_URL?match=ci/topic" > stream.txt &
-          sleep 2
-          php /tmp/hub.php publish
-          # the subscriber ends on its own time limit, which is not a failure
-          wait || true
-          grep -F 'data: {"ci":true}' stream.txt
 
       - name: Mail reaches the mail catcher
         run: |

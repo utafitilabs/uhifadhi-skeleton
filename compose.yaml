@@ -24,11 +24,12 @@ services:
 
 ###> symfony/mercure-bundle ###
   mercure:
-    # Mercure 1.0, the hub FrankenPHP bundles from v1.13.0, so development
-    # speaks the protocol a FrankenPHP-served installation does: subscriptions
-    # on `match=`, tokens bound to a trusted issuer, and the cookie the app and
-    # the hub agree on below.
-    image: dunglas/mercure:v1.0
+    # Pinned to the 0.24 line: the hub that FrankenPHP bundles (v1.12.x carries
+    # Mercure 0.24.2), so development speaks the protocol a FrankenPHP-served
+    # installation does. Mercure 1.0 changes the subscription protocol
+    # (`match=` for `topic=`, object claims, a __Secure- cookie) and drops the
+    # dev.Caddyfile started below; the platform moves to it as one change.
+    image: dunglas/mercure:v0.24
     restart: unless-stopped
     environment:
       # HTTPS off: the hub answers plain http on port 80, the port the Symfony
@@ -39,23 +40,17 @@ services:
       SERVER_NAME: ':80'
       MERCURE_PUBLISHER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
       MERCURE_SUBSCRIBER_JWT_KEY: '!ChangeThisMercureHubJWTSecretKey!'
-      # The issuer the app's tokens name (`iss`, MERCURE_JWT_ISSUER in .env):
-      # a 1.0 hub accepts a token only from an issuer it trusts.
-      # https://mercure.rocks/docs/hub/config ("issuer")
-      MERCURE_TRUSTED_ISSUERS: 'https://127.0.0.1:8000'
       # Set the URL of your Symfony project (without trailing slash!) as value of the cors_origins directive
-      # (the Symfony CLI's address, over http and over https once its local certificate authority is installed).
-      # The cookie name is prefix-less because this hub is plain http, where a
-      # browser never sends a __Secure- cookie ("Use a prefix-less name only for
-      # local HTTP development"); MERCURE_COOKIE_NAME in .env is the same name.
+      # (the Symfony CLI's address, over http and over https once its local certificate authority is installed)
       MERCURE_EXTRA_DIRECTIVES: |
         cors_origins http://127.0.0.1:8000 https://127.0.0.1:8000
-        cookie_name mercure_access_token
-    # The image's own readiness check, on the Caddy admin API (IPv4 only): 200 once every
-    # transport can serve. The /healthz on port 80 is deprecated in 1.0.
-    # https://mercure.rocks/docs/production/health-monitoring
+    # Comment the following line to disable the development mode
+    command: /usr/bin/caddy run --config /etc/caddy/dev.Caddyfile
+    # The Mercure documentation's own check: the image ships wget, not curl.
+    # https://mercure.rocks/docs/hub/traefik
+    # https://github.com/symfony/recipes/pull/1496
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:2019/mercure/health/ready"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/healthz"]
       timeout: 5s
       retries: 5
       start_period: 60s

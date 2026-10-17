@@ -434,6 +434,14 @@ tags on those branches as the releases. There is no `main`. `composer.json`
 requires the core with a caret (`^0.1`), which resolves to the latest tag on
 that line; the same goes for every module in the table above.
 
+A fix lands on the **oldest line that has the fault** and is released from
+there; then that line is **merged upward** into every newer line, as a merge
+and never a cherry-pick, so each fix reaches each later line exactly once and
+the lines never drift apart — Symfony's own maintenance rule, which this shape
+copies. A file that is a line's own (a CI pin, a lock) is resolved in the
+merge by keeping the newer line's version. New features land on the newest
+line only.
+
 Every package of the fleet is listed on Packagist, so a plain
 `composer require` finds it. Telemetry, the managed-hosting tier's module, is
 private and not part of an installation's own list.

@@ -116,6 +116,34 @@
             "delete-confirm": {
                 "enabled": true,
                 "fetch": "lazy"
+            },
+            "onpage": {
+                "enabled": true,
+                "fetch": "eager"
+            },
+            "dropdown": {
+                "enabled": true,
+                "fetch": "eager"
+            },
+            "permission-positions": {
+                "enabled": true,
+                "fetch": "lazy"
+            },
+            "permission-analysis": {
+                "enabled": true,
+                "fetch": "lazy"
+            },
+            "permission-check": {
+                "enabled": true,
+                "fetch": "lazy"
+            },
+            "choice-link": {
+                "enabled": true,
+                "fetch": "lazy"
+            },
+            "table-filter": {
+                "enabled": true,
+                "fetch": "lazy"
             }
         }
     },

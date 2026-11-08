@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb76b7df4208b7bdf6fc086f10cbd85a",
+    "content-hash": "4c7ba1a44b727ea01a0b045449f4811d",
     "packages": [
         {
             "name": "api-platform/core",
@@ -7827,16 +7827,16 @@
         },
         {
             "name": "uhifadhi/uhifadhi",
-            "version": "v0.2.6",
+            "version": "v0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/utafitilabs/uhifadhi.git",
-                "reference": "458024133866445dd972f5bca27cd27b31f1c880"
+                "reference": "4004982e2b1120e1632fce194bf2451ebbef1f2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/utafitilabs/uhifadhi/zipball/458024133866445dd972f5bca27cd27b31f1c880",
-                "reference": "458024133866445dd972f5bca27cd27b31f1c880",
+                "url": "https://api.github.com/repos/utafitilabs/uhifadhi/zipball/4004982e2b1120e1632fce194bf2451ebbef1f2a",
+                "reference": "4004982e2b1120e1632fce194bf2451ebbef1f2a",
                 "shasum": ""
             },
             "require": {
@@ -7945,9 +7945,9 @@
             ],
             "support": {
                 "issues": "https://github.com/utafitilabs/uhifadhi/issues",
-                "source": "https://github.com/utafitilabs/uhifadhi/tree/v0.2.6"
+                "source": "https://github.com/utafitilabs/uhifadhi/tree/v0.3.0"
             },
-            "time": "2026-11-08T09:40:54+00:00"
+            "time": "2026-11-08T13:43:21+00:00"
         },
         {
             "name": "utafitilabs/postgis-bundle",

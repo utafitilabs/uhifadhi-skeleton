@@ -148,6 +148,10 @@
             "cascade": {
                 "enabled": true,
                 "fetch": "eager"
+            },
+            "fold": {
+                "enabled": true,
+                "fetch": "eager"
             }
         }
     },

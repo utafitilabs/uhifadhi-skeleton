@@ -84,6 +84,18 @@ jobs:
           coverage: none
           tools: composer:v2, symfony-cli
 
+      # setup-php reports a tool it could not download and carries on, so the
+      # CLI is checked and, when missing, installed from Symfony's own Debian
+      # repository — the install the download page documents for Linux.
+      # @see https://symfony.com/download
+      - name: The Symfony CLI is on the path
+        run: |
+          if ! command -v symfony >/dev/null; then
+            curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.deb.sh' | sudo -E bash
+            sudo apt-get install -y symfony-cli
+          fi
+          symfony version
+
       - name: 1. Install dependencies
         env:
           COMPOSER_AUTH: '{"github-oauth":{"github.com":"${{ secrets.BUNDLES_TOKEN || secrets.GITHUB_TOKEN }}"}}'

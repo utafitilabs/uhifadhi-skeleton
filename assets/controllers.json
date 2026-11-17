@@ -85,6 +85,10 @@
                 "enabled": true,
                 "fetch": "eager"
             },
+            "check-in-statuses": {
+                "enabled": true,
+                "fetch": "eager"
+            },
             "module-order": {
                 "enabled": true,
                 "fetch": "eager"

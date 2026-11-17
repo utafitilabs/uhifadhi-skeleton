@@ -28,3 +28,10 @@ shell:
     # document head, BEFORE the first paint, so nobody is shown the wrong
     # palette for a frame. A link may override it for one view with `?theme=dark`.
     default_theme: light
+
+    # Your organization's own manual, read in the app under Help › Manual by
+    # everyone signed in. Point it at a folder of yours holding
+    # <folder>.html, <folder>.pdf and img/ (core 0.3.2 and later); leave it
+    # unset and the Help group does not appear. The manual is yours: changing
+    # it is a commit and a deploy of this project, never a core release.
+    # manual: '%kernel.project_dir%/docs/manual'
